@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "vec3.h"
-// global constants
-int PX_WIDTH = 250;
-int PX_HEIGHT = 250;
+#include "global_constants.h"
 
 void writeImage(color* pixelBuffer);
 int main ()

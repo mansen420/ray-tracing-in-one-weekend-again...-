@@ -24,7 +24,8 @@ std::ostream& operator<< (std::ostream& s, vec3& v)
     s << v.x << ' ' << v.y << ' ' << v.z << ' ';
     return s;
 }
-const color mapColor(const color& c)
+//color utils
+const color mapColor(const color& c) 
 {   //maps color values from [0, 1] to [0, 255]       
     color result = color (static_cast<int>(c.r*255.999), static_cast<int>(c.g*255.999), static_cast<int>(c.b*255.999));    
     return result;
