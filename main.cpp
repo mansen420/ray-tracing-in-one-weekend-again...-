@@ -15,6 +15,7 @@ int main ()
             pixelBuffer[j + i*PX_HEIGHT] = mapColor ( color((double(i)/(PX_HEIGHT-1)), 0.25, ((double)(j)/(PX_WIDTH-1))) );
         }
     }
+    std::cout << "\nDone rendering!" << std::endl;
     writeImage(pixelBuffer);
     return 0;
 }
