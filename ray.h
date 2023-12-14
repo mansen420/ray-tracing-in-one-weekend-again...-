@@ -5,12 +5,12 @@
 
 struct ray
 {   //rays are immutable
-    ray (const point &origin, const vec3 &direction) : rayOrigin(origin), rayDirection(direction) {}
-    const point rayOrigin;
-    const vec3 rayDirection;
-    point at(float t)
+    ray (const point &origin, const vec3 &direction) : origin(origin), direction(direction) {}
+    const point origin;
+    const vec3 direction;
+    point at(float t) const
     {
-        return rayOrigin + t * rayDirection;
+        return origin + t * direction;
     } 
 };
 
