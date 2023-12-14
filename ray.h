@@ -1,3 +1,6 @@
+#ifndef RAY 
+#define RAY
+
 #include "vec3.h"
 
 struct ray
@@ -10,3 +13,5 @@ struct ray
         return rayOrigin + t * rayDirection;
     } 
 };
+
+#endif
