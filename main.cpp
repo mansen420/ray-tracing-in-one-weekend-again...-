@@ -12,7 +12,8 @@ int main ()
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';
         for (int j = 0; j < PX_WIDTH; j++)
         {
-            pixelBuffer[j + i*PX_HEIGHT] = mapColor ( color((double(i)/(PX_HEIGHT-1)), 0.25, ((double)(j)/(PX_WIDTH-1))) );
+            pixelBuffer[j + i*PX_HEIGHT] = mapColor ( color((double(i)/(PX_HEIGHT-1)),
+            0.25, ((double)(j)/(PX_WIDTH-1))) );
         }
     }
     std::cout << "\nDone rendering!" << std::endl;
@@ -20,16 +21,16 @@ int main ()
     return 0;
 }
 void writeImage(color* pixelBuffer)
-{
+{   //prints pixelBuffer to image.ppm, left to right, top to bottom. 
     std::ofstream image("image.ppm");
     image << "P3\n" << PX_WIDTH << " " << PX_HEIGHT << "\n255\n";
     for (int i = 0; i < PX_HEIGHT; i++)
     {
         for (int j = 0; j < PX_WIDTH; j++)
         {
-            image << pixelBuffer[j + PX_HEIGHT*i];
+            image << pixelBuffer[j + PX_HEIGHT * i];
         }
-        image <<"\n";
+        image << "\n";
     }
     image.close();
 }

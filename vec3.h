@@ -40,7 +40,7 @@ std::ostream& operator<< (std::ostream& s, vec3& v);
 //vector utils 
 float dot (const vec3 &u, const vec3 &v);
 vec3 cross(const vec3 &u, const vec3 &v);
-
+vec3 normalized(const vec3 &v);
 //color utils
 const color mapColor(const color& c);
 
