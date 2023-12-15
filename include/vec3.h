@@ -48,6 +48,7 @@ vec3 random_inside_unit_sphere();
 vec3 random_on_unit_sphere();
 vec3 reflect(const vec3& incident, const vec3& normal);
 vec3 refract(const vec3& uv, const vec3& n, float etai_over_etat);
+vec3 random_in_unit_disk() ;
 //color utils
 const color mapColor(const color& c);
 

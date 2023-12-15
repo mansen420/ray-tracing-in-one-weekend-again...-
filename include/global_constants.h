@@ -12,15 +12,17 @@ constexpr float PI = 3.1415926535897932385;
 inline constexpr float RADIANS (float degrees) { return degrees * PI / 180.0;}
 
 //virtual viewport properties
-constexpr float V_FOV_DEG = 12;     //arbitrary
+constexpr float V_FOV_DEG = 60;     //arbitrary
 constexpr float V_FOV_RAD = RADIANS(V_FOV_DEG);
 
-const point lookFrom = point(0, 0.5, 2);
+const point lookFrom = point(0, 0, 0);
 const point lookAt = vec3(0, 0, -1);
 
+const float FOCUS_DIST = 0.65; 
+const float defocus_angle = 10;
+
     //honorary constexprs...
-const float FOCAL_LENGTH = (lookFrom - lookAt).magnitude(); 
-const float VIEWPORT_HEIGHT = 2 * tan(V_FOV_RAD/2.0) * FOCAL_LENGTH;
+const float VIEWPORT_HEIGHT = 2 * tan(V_FOV_RAD/2.0) * FOCUS_DIST;
 const float VIEWPORT_WIDTH = VIEWPORT_HEIGHT * (static_cast<float>(PX_WIDTH)/PX_HEIGHT);
 
 const vec3 vup = normalized(vec3(0.0f, 1.0f, 0.f));

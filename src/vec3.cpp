@@ -148,6 +148,14 @@ vec3 refract(const vec3& uv, const vec3& n, float etai_over_etat)
     vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.magnitudeSquared())) * n;
     return r_out_perp + r_out_parallel;
 }
+vec3 random_in_unit_disk() 
+{
+    while (true) {
+        auto p = vec3(random_f(-1,1), random_f(-1,1), 0);
+        if (p.magnitudeSquared() < 1)
+            return p;
+    }
+}
 //color utils
 const color mapColor(const color& c) 
 {   //maps color values from [0, 1] to [0, 255]       
