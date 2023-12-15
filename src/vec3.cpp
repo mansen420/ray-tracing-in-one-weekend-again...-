@@ -141,6 +141,13 @@ vec3 reflect(const vec3& incident, const vec3& normal)
 {
     return incident - (2 * dot(incident, normal) * normal);
 }
+vec3 refract(const vec3& uv, const vec3& n, float etai_over_etat) 
+{
+    auto cos_theta = fmin(dot(-uv, n), 1.0);
+    vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
+    vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.magnitudeSquared())) * n;
+    return r_out_perp + r_out_parallel;
+}
 //color utils
 const color mapColor(const color& c) 
 {   //maps color values from [0, 1] to [0, 255]       

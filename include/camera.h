@@ -7,15 +7,22 @@
 class camera 
 {
 public:
-    const point eye = point(0.0f, 0.0f, 0.f);
+    const point eye = lookFrom;
 
-    const vec3 focal_length = vec3(0.f, 0.f, 1.f);
-    const vec3 viewport_up = vec3(0.f, VIEWPORT_HEIGHT, 0.f);
-    const vec3 viewport_right = vec3(VIEWPORT_WIDTH, 0.f, 0.f);
+    //camera-relative orthonormal basis
+    vec3 w = normalized(lookFrom - lookAt);
+    vec3 u = cross(vup, w);
+    vec3 v = cross(w, u);
+
+    const vec3 focal_length = FOCAL_LENGTH * w;
+    const vec3 viewport_up = VIEWPORT_HEIGHT * v;
+    const vec3 viewport_right = VIEWPORT_WIDTH * u;
+
     const point bottom_left_pixel  = eye - focal_length - (viewport_up / 2) - (viewport_right / 2);
 
     const vec3 pixel_delta_right = viewport_right / PX_WIDTH;
     const vec3 pixel_delta_up = viewport_up / PX_HEIGHT;
+
     const point pixel00_loc = bottom_left_pixel + (pixel_delta_right/2) + (pixel_delta_up/2);
 
     camera(){}

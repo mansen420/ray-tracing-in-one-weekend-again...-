@@ -2,6 +2,7 @@
 #define MATERIAL
 
 #include "geometry.h"
+#include "global_constants.h"
 
 struct record;
 
@@ -29,5 +30,13 @@ public:
     virtual bool scatter
         (const ray& incidentRay, const record& hitRec, color& attenuation, ray &scatteredRay) const override;
 };
-
+class dialectric : public material
+{
+    float ir;
+public:
+    dialectric (float indexOfRefraction) : ir(indexOfRefraction) {albedo = color(1, 1, 1);}
+    virtual bool scatter
+        (const ray& incidentRay, const record& hitRec, color& attenuation, ray &scatteredRay) const override;
+};
+float reflectance(float cosine, float ref_idx);
 #endif

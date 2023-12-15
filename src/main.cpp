@@ -54,9 +54,11 @@ int main ()
     camera cam;
     color* pixelBuffer = new color[PX_HEIGHT*PX_WIDTH]; //put it on the heap to avoid stack overflow
     metal grayMetal (color (0.55, 0.78, 1.0), 0.4f);
+    metal redMetal (color (1.0, 0.65, 0.65), 0.4f);
     diffuse redDiffuse (color(1.0, 0.25, 0.25));
+    dialectric d(1.5f);
     scene.push_back(new sphere(point(0, 0.25, -1), 0.5f, &grayMetal));
-    scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f, &redDiffuse));
+    scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f, &grayMetal));
     for (int i = 0; i < PX_HEIGHT; i++)
     {
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';
