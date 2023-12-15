@@ -46,6 +46,7 @@ vec3 random_vec3();
 vec3 random_vec3(const float min, const float max);
 vec3 random_inside_unit_sphere();
 vec3 random_on_unit_sphere();
+vec3 reflect(const vec3& incident, const vec3& normal);
 //color utils
 const color mapColor(const color& c);
 

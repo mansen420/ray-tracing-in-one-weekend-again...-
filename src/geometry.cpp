@@ -20,6 +20,6 @@ bool sphere::intersect(const ray &r, const interval &intersectionRange, record &
     hitRecord.t = root;
     hitRecord.p = r.at(root);
     hitRecord.setNormal(r.direction , normalized((hitRecord.p - this->c)/this->r));
-    
+    hitRecord.matPtr = this->objectMat;
     return true;
 }

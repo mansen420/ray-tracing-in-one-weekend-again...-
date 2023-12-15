@@ -137,6 +137,10 @@ vec3 random_on_unit_sphere()
 {
     return normalized(random_inside_unit_sphere());
 }
+vec3 reflect(const vec3& incident, const vec3& normal) 
+{
+    return incident - (2 * dot(incident, normal) * normal);
+}
 //color utils
 const color mapColor(const color& c) 
 {   //maps color values from [0, 1] to [0, 255]       

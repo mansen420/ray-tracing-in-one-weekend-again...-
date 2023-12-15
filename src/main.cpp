@@ -5,6 +5,7 @@
 
 #include "../include/geometry.h"
 #include "../include/camera.h"
+#include "../include/material.h"
 
 void writeImage(color* pixelBuffer);
 static std::vector<hittable*> scene;
@@ -30,9 +31,14 @@ color trace (const ray &r)
     }
     if (hitObject)
     {
-        vec3 scatterDirection = random_on_unit_sphere() + intersectionInfo.normal;
-        bounceDepth++;
-        return 0.5 * trace(ray(intersectionInfo.p, scatterDirection));
+        ray scatteredRay;
+        color attenuation;
+        if (intersectionInfo.matPtr->scatter(r, intersectionInfo, attenuation, scatteredRay))
+        {
+            bounceDepth++;
+            return attenuation * trace(scatteredRay);
+        }
+        return color (0, 0, 0);
     }
     //background
     float t = normalized(r.direction).y;  //[-viewportW/2, viewportW/2]
@@ -47,8 +53,10 @@ int main ()
 {
     camera cam;
     color* pixelBuffer = new color[PX_HEIGHT*PX_WIDTH]; //put it on the heap to avoid stack overflow
-    scene.push_back(new sphere(point(0, 0.25, -1), 0.5f));
-    scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f));
+    metal grayMetal (color (0.55, 0.78, 1.0), 0.4f);
+    diffuse redDiffuse (color(1.0, 0.25, 0.25));
+    scene.push_back(new sphere(point(0, 0.25, -1), 0.5f, &grayMetal));
+    scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f, &redDiffuse));
     for (int i = 0; i < PX_HEIGHT; i++)
     {
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';
