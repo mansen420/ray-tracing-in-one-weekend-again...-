@@ -2,6 +2,7 @@
 #define GEOMETRY
 
 #include "ray.h"
+#include "interval.h"
 
 struct record
 {
@@ -19,7 +20,7 @@ class hittable
 {
 public:
     virtual ~hittable() = default;  //whad does this do?
-    virtual bool intersect(const ray &r, const float tMin,const float tMax, record &hitRecord) const = 0;
+    virtual bool intersect(const ray &r, const interval &intersectionRange, record &hitRecord) const = 0;
 };
 
 class sphere : public hittable
@@ -28,7 +29,7 @@ class sphere : public hittable
     point c;
 public:
     sphere(point center, float radius) : r(radius), c(center) {}
-    virtual bool intersect(const ray &r, const float tMin,const float tMax, record &hitRecord) const override;
+    virtual bool intersect(const ray &r, const interval &intersectionRange, record &hitRecord) const override;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "geometry.h"
 #include <cmath>
 
-bool sphere::intersect(const ray &r, const float tMin,const float tMax, record &hitRecord) const
+bool sphere::intersect(const ray &r, const interval &intersectionRange, record &hitRecord) const
 {
     const vec3 &oc = r.origin-this->c;
     const float &b = 2*dot(r.direction, oc);
@@ -11,10 +11,10 @@ bool sphere::intersect(const ray &r, const float tMin,const float tMax, record &
     if (discriminant < 0)
         return false;
     float root = (-b - sqrt(discriminant))/(2.0*a);
-    if (root >= tMax || root <= tMin)
+    if (!intersectionRange.contains_incl(root))
     {
         root = (-b + sqrt(discriminant))/(2.0*a);
-        if (root >= tMax || root <= tMin)
+        if (!intersectionRange.contains_incl(root))
             return false;
     } 
     hitRecord.t = root;
