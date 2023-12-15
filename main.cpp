@@ -5,17 +5,29 @@
 #include "ray.h"
 #include "global_constants.h"
 #include "geometry.h"
+#include <vector>
 
 void writeImage(color* pixelBuffer);
+static std::vector<hittable*> scene;
 static int bounceDepth = 0;
-color trace (ray r, sphere s)
+color trace (ray r)
 {
     record intersectionInfo;
-    if (s.intersect(r, 0, 100, intersectionInfo))
+    bool hitObject = false;
+    float closestIntersection = 100.0f;
+    for (const hittable* const &object : scene)
     {
-        return color(0.5*intersectionInfo.normal+0.5);
+        if (object->intersect(r, 0.f, closestIntersection, intersectionInfo))
+        {
+            closestIntersection = intersectionInfo.t;
+            hitObject = true;
+        }
     }
+    if (hitObject)
+        return 0.5 * intersectionInfo.normal + 0.5;
     bounceDepth = 0;    //reset bounce depth
+
+    //background
     float t = normalized(r.direction).y;  //[-viewportW/2, viewportW/2]
     t += VIEWPORT_HEIGHT/2;              // [0, viewportW]
     t /= VIEWPORT_HEIGHT;               //  [0, 1]
@@ -36,8 +48,11 @@ int main ()
     const vec3 pixel_delta_right = viewport_right / PX_WIDTH;
     const vec3 pixel_delta_up = viewport_up / PX_HEIGHT;
     const point pixel00_loc = bottom_left_pixel + (pixel_delta_right/2) + (pixel_delta_up/2);
+    //
 
     color* pixelBuffer = new color[PX_HEIGHT*PX_WIDTH]; //put it on the heap to avoid stack overflow
+    scene.push_back(new sphere(point(0, 0.25, -1), 0.5f));
+    scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f));
     for (int i = 0; i < PX_HEIGHT; i++)
     {
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';
@@ -45,13 +60,16 @@ int main ()
         {
             point currentPixelCenter = pixel00_loc + pixel_delta_right * j + pixel_delta_up * i;
             ray r = ray (eye, currentPixelCenter - eye);
-            color c = trace(r, sphere(point(0, 0, -1), 0.5f));
+            color c = trace(r);
             pixelBuffer[j + i * PX_WIDTH] = mapColor(c);
         }
     }
     std::cout << "\nDone rendering!" << std::endl;
     writeImage(pixelBuffer);
+    //housekeeping...
     delete[] pixelBuffer;
+    for (hittable* const &x : scene)
+        delete x;
     return 0;
 }
 void writeImage(color* pixelBuffer)
