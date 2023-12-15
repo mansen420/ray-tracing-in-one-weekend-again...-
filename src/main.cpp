@@ -12,27 +12,35 @@ static int bounceDepth = 0;
 static int samplesPerPixel = 25;
 color trace (const ray &r)
 {
+    if (bounceDepth >= 50)
+    {
+        bounceDepth = 0;
+        return color(0, 0, 0);
+    }
     record intersectionInfo;
     bool hitObject = false;
     float closestIntersection = INF;
     for (const hittable* const &object : scene)
     {
-        if (object->intersect(r, interval(0, closestIntersection), intersectionInfo))
+        if (object->intersect(r, interval(0.001f, closestIntersection), intersectionInfo))
         {
             closestIntersection = intersectionInfo.t;
             hitObject = true;
         }
     }
     if (hitObject)
-        return 0.5 * intersectionInfo.normal + 0.5;
-    bounceDepth = 0;    //reset bounce depth
-
+    {
+        vec3 scatterDirection = random_on_unit_sphere() + intersectionInfo.normal;
+        bounceDepth++;
+        return 0.5 * trace(ray(intersectionInfo.p, scatterDirection));
+    }
     //background
     float t = normalized(r.direction).y;  //[-viewportW/2, viewportW/2]
     t += VIEWPORT_HEIGHT/2;              // [0, viewportW]
     t /= VIEWPORT_HEIGHT;               //  [0, 1]
     color result = 
-    color(0.5f, 0.5f, 1.0f)*t + color(1.f, 1.f, 1.f)*(1-t);
+    color(0.5f, 0.7f, 1.0f)*t + color(1.f, 1.f, 1.f)*(1-t);
+    // return result;
     return color(0.25f*t, 0.5f*t, t);
 }
 int main ()
@@ -53,7 +61,9 @@ int main ()
                 ray r = cam.eyeToPixel( float(j + random_f() - 0.5), float(i + random_f() - 0.5));
                 c += trace(r);
             }
+            //process color
             c /= samplesPerPixel;
+            c.r = sqrt(c.r), c.g = sqrt(c.g), c.b=sqrt(c.b);
             pixelBuffer[j + i * PX_WIDTH] = mapColor(c);
         }
     }

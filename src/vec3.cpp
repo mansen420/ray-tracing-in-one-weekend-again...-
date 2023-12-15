@@ -1,4 +1,5 @@
 #include "../include/vec3.h"
+#include "../include/global_constants.h"
 #include "cmath"
 vec3::vec3 (float e1, float e2, float e3){ e[0] = e1, e[1] = e2, e[2] = e3; }
 vec3::vec3 (const vec3& v) { *this = v; }
@@ -114,6 +115,27 @@ float vec3::magnitude() const
 vec3 normalized(const vec3 &v)
 {
     return v/v.magnitude();
+}
+vec3 random_vec3()
+{
+    return vec3(random_f(), random_f(), random_f());
+}
+vec3 random_vec3(const float min, const float max)
+{
+    return vec3(random_f(min, max), random_f(min, max), random_f(min, max));
+}
+vec3 random_inside_unit_sphere()
+{
+    while (true)
+    {
+        vec3 candidate = random_vec3(-1.0, 1.0);
+        if (candidate.magnitudeSquared() < 1.0)
+            return candidate;
+    }
+}
+vec3 random_on_unit_sphere()
+{
+    return normalized(random_inside_unit_sphere());
 }
 //color utils
 const color mapColor(const color& c) 

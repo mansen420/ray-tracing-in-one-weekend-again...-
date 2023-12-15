@@ -41,6 +41,11 @@ std::ostream& operator<< (std::ostream& s, vec3& v);
 float dot (const vec3 &u, const vec3 &v);
 vec3 cross(const vec3 &u, const vec3 &v);
 vec3 normalized(const vec3 &v);
+//returns a vec3 with random elements in [0, 1)
+vec3 random_vec3();
+vec3 random_vec3(const float min, const float max);
+vec3 random_inside_unit_sphere();
+vec3 random_on_unit_sphere();
 //color utils
 const color mapColor(const color& c);
 

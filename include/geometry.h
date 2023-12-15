@@ -8,11 +8,11 @@ struct record
 {
     point p;
     float t;
-    bool outside;
+    bool intersected_outside;
     void setNormal(const vec3 &intersectDirection, const vec3 &outwardNormal)
     {   //assumes outward normal is unit length!
-        outside = dot(intersectDirection, outwardNormal) < 0; 
-        normal = outside ? outwardNormal : -outwardNormal;
+        intersected_outside = dot(intersectDirection, outwardNormal) < 0; 
+        normal = intersected_outside ? outwardNormal : -outwardNormal;
     }
     vec3 normal;    //this normal is agianst the intersection direction
 };
