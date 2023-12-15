@@ -11,7 +11,7 @@ struct ray
     point at(float t) const
     {
         return origin + t * direction;
-    } 
+    }
 };
 
 #endif

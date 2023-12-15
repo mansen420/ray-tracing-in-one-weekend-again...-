@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include "vec3.h"
-#include "ray.h"
-#include "global_constants.h"
-#include "geometry.h"
 #include <vector>
+
+#include "../include/geometry.h"
+#include "../include/camera.h"
 
 void writeImage(color* pixelBuffer);
 static std::vector<hittable*> scene;
 static int bounceDepth = 0;
-color trace (ray r)
+static int samplesPerPixel = 25;
+color trace (const ray &r)
 {
     record intersectionInfo;
     bool hitObject = false;
@@ -37,19 +37,7 @@ color trace (ray r)
 }
 int main ()
 {
-    //camera and viewport properties 
-    const point eye = point(0.0f, 0.0f, 0.f);
-
-    const vec3 focal_length = vec3(0.f, 0.f, 1.f);
-    const vec3 viewport_up = vec3(0.f, VIEWPORT_HEIGHT, 0.f);
-    const vec3 viewport_right = vec3(VIEWPORT_WIDTH, 0.f, 0.f);
-    const point bottom_left_pixel  = eye - focal_length - (viewport_up / 2) - (viewport_right / 2);
-
-    const vec3 pixel_delta_right = viewport_right / PX_WIDTH;
-    const vec3 pixel_delta_up = viewport_up / PX_HEIGHT;
-    const point pixel00_loc = bottom_left_pixel + (pixel_delta_right/2) + (pixel_delta_up/2);
-    //
-
+    camera cam;
     color* pixelBuffer = new color[PX_HEIGHT*PX_WIDTH]; //put it on the heap to avoid stack overflow
     scene.push_back(new sphere(point(0, 0.25, -1), 0.5f));
     scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f));
@@ -58,9 +46,14 @@ int main ()
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';
         for (int j = 0; j < PX_WIDTH; j++)
         {
-            point currentPixelCenter = pixel00_loc + pixel_delta_right * j + pixel_delta_up * i;
-            ray r = ray (eye, currentPixelCenter - eye);
-            color c = trace(r);
+            //sample multiple rays through the same pixel square, then average the results
+            color c(0, 0, 0);
+            for (int k = 0; k < samplesPerPixel; k++)
+            {
+                ray r = cam.eyeToPixel( float(j + random_f() - 0.5), float(i + random_f() - 0.5));
+                c += trace(r);
+            }
+            c /= samplesPerPixel;
             pixelBuffer[j + i * PX_WIDTH] = mapColor(c);
         }
     }

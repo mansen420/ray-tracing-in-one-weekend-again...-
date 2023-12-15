@@ -1,4 +1,4 @@
-#include "vec3.h"
+#include "../include/vec3.h"
 #include "cmath"
 vec3::vec3 (float e1, float e2, float e3){ e[0] = e1, e[1] = e2, e[2] = e3; }
 vec3::vec3 (const vec3& v) { *this = v; }

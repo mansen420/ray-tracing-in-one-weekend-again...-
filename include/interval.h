@@ -12,6 +12,12 @@ struct interval
     interval (const float min, const float max) : min(min), max(max) {}
     bool contains_incl (const float x) const {return x >= min && x <= max;}
     bool contains_excl (const float x) const {return x > min && x < max;}
+    float clamp(const float x) const 
+    {
+        if (x < min) return min;
+        if (x > max) return max;
+        return x;
+    }
 };
 
 #endif

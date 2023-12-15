@@ -1,4 +1,4 @@
-#include "geometry.h"
+#include "../include/geometry.h"
 #include <cmath>
 
 bool sphere::intersect(const ray &r, const interval &intersectionRange, record &hitRecord) const
