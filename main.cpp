@@ -14,7 +14,7 @@ color trace (ray r)
 {
     record intersectionInfo;
     bool hitObject = false;
-    float closestIntersection = 100.0f;
+    float closestIntersection = INF;
     for (const hittable* const &object : scene)
     {
         if (object->intersect(r, 0.f, closestIntersection, intersectionInfo))
