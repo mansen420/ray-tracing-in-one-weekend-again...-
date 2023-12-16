@@ -19,7 +19,7 @@ const point lookFrom = point(0, 0, 0);
 const point lookAt = vec3(0, 0, -1);
 
 const float FOCUS_DIST = 0.65; 
-const float defocus_angle = 10;
+const float defocus_angle = 0;
 
     //honorary constexprs...
 const float VIEWPORT_HEIGHT = 2 * tan(V_FOV_RAD/2.0) * FOCUS_DIST;

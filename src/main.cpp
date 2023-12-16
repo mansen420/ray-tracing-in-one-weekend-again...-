@@ -10,10 +10,10 @@
 void writeImage(color* pixelBuffer);
 static std::vector<hittable*> scene;
 static int bounceDepth = 0;
-static int samplesPerPixel = 25;
+static int samplesPerPixel = 125;
 color trace (const ray &r)
 {
-    if (bounceDepth >= 50)
+    if (bounceDepth >= 250)
     {
         bounceDepth = 0;
         return color(0, 0, 0);
@@ -35,11 +35,17 @@ color trace (const ray &r)
         color attenuation;
         if (intersectionInfo.matPtr->scatter(r, intersectionInfo, attenuation, scatteredRay))
         {
+            if (intersectionInfo.matPtr->emissive)
+            {
+                return attenuation;
+            }
             bounceDepth++;
             return attenuation * trace(scatteredRay);
         }
         return color (0, 0, 0);
     }
+    return color (0, 0, 0);
+    /*
     //background
     float t = normalized(r.direction).y;  //[-viewportW/2, viewportW/2]
     t += VIEWPORT_HEIGHT/2;              // [0, viewportW]
@@ -47,7 +53,7 @@ color trace (const ray &r)
     color result = 
     color(0.5f, 0.7f, 1.0f)*t + color(1.f, 1.f, 1.f)*(1-t);
     // return result;
-    return color(0.25f*t, 0.5f*t, t);
+    return color(0.25f*t, 0.5f*t, t); */
 }
 int main ()
 {
@@ -57,9 +63,13 @@ int main ()
     metal redMetal (color (1.0, 0.65, 0.65), 0.4f);
     diffuse redDiffuse (color(1.0, 0.25, 0.25));
     dialectric d(1.5f);
+    light l(color(1, 1, 1));
+    light lAmbient (color(1.0, 0.45, 0.6));
     scene.push_back(new sphere(point(0, 0.25, -1.2), 0.5f, &grayMetal));
     scene.push_back(new sphere(point(0.5, -20.0, -4.0), 20.f, &grayMetal));
     scene.push_back(new sphere(point(0.0, -0.15, -0.75), 0.1, &redDiffuse));
+    scene.push_back(new sphere(point(2.2, 1, -1), 1.5, &l));
+    scene.push_back(new sphere(point(-20, 0, -4), 10, &lAmbient));
     for (int i = 0; i < PX_HEIGHT; i++)
     {
         std::cout << "\rLines remaining : " << PX_HEIGHT-i << ' ';

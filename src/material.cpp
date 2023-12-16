@@ -46,3 +46,8 @@ float reflectance(float cosine, float ref_idx)
     r0 = r0 * r0;
     return r0 + (1 - r0) * pow((1 - cosine), 5);
 }
+bool light::scatter (const ray& incidentRay, const record& hitRec, color& attenuation, ray &scatteredRay) const
+{
+    attenuation = albedo;
+    return true;   
+}

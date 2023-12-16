@@ -9,6 +9,7 @@ struct record;
 class material
 {
 public:
+    bool emissive = false;
     color albedo;
     virtual ~material() = default; 
     //warning : caller must ensure scatteredRay is deleted!
@@ -39,4 +40,11 @@ public:
         (const ray& incidentRay, const record& hitRec, color& attenuation, ray &scatteredRay) const override;
 };
 float reflectance(float cosine, float ref_idx);
+class light : public material
+{
+public :
+    light (const color& albedo) {this->albedo=albedo; emissive = true;}
+    virtual bool scatter
+        (const ray& incidentRay, const record& hitRec, color& attenuation, ray &scatteredRay) const override;
+};
 #endif
