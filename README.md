@@ -9,6 +9,8 @@ I actually did it in a weekend this time!
 
 I also added my own implementation of light and emissive materials : 
 
+
+![image](https://github.com/mansen420/ray-tracing-in-one-weekend-again...-/assets/50342436/d08eab4b-4a9b-42e2-b71b-4608c43d2796)
 ![nice2](https://github.com/mansen420/ray-tracing-in-one-weekend-again...-/assets/50342436/ba8ca04c-7430-4523-ae5b-358b99d5f5ec)
 ![light](https://github.com/mansen420/ray-tracing-in-one-weekend-again...-/assets/50342436/8bfd3b1a-185b-47dc-a7f6-de6a359591ee)
 
